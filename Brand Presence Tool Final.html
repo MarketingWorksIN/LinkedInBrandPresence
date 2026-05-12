@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Brand Presence & Authority Scorecard | Marketing Works</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #f4f7fc;
+            padding: 2rem 1rem;
+            color: #1e2a3e;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Header + Logo */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .logo {
+            max-width: 260px;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .main-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E8580A, #c04a08);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .subhead {
+            color: #2c3e50;
+            font-size: 1rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .card-header {
+            background: #E8580A;  /* brand orange */
+            color: white;
+            padding: 1.2rem 2rem;
+        }
+        .card-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        .card-header p {
+            opacity: 0.85;
+            font-size: 0.9rem;
+        }
+        .card-body {
+            padding: 1.8rem 2rem;
+        }
+
+        /* Questions */
+        .question-group {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e9edf2;
+            padding-bottom: 1.5rem;
+        }
+        .question-text {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: #0a2540;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .option {
+            background: #f8fafd;
+            border: 1px solid #dce5ef;
+            border-radius: 60px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #1e2a3e;
+        }
+        .option.selected {
+            background: #E8580A;
+            color: white;
+            border-color: #E8580A;
+            box-shadow: 0 4px 8px rgba(232,88,10,0.2);
+        }
+
+        /* Lead form */
+        .lead-card {
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            padding: 1.8rem 2rem;
+        }
+        .lead-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #cbdde9;
+            border-radius: 24px;
+            font-size: 1rem;
+            background: #ffffff;
+            transition: 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #E8580A;
+            box-shadow: 0 0 0 3px rgba(232,88,10,0.1);
+        }
+        .btn-calculate {
+            background: #E8580A;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        .btn-calculate:hover {
+            background: #c04a08;
+            transform: translateY(-2px);
+        }
+
+        /* Results Dashboard */
+        .results {
+            display: none;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+            padding: 2rem;
+        }
+        .results-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid #E8580A;
+            padding-left: 1rem;
+        }
+        .score-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        .score-item {
+            flex: 1;
+            min-width: 220px;
+            background: #f9fcff;
+            border-radius: 28px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #e6edf4;
+        }
+        .score-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .circular-score {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1rem;
+        }
+        .circular-score svg {
+            transform: rotate(-90deg);
+            width: 140px;
+            height: 140px;
+        }
+        .circular-score circle {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+        }
+        .circle-bg {
+            stroke: #e2e8f0;
+        }
+        .circle-progress {
+            stroke: #E8580A;
+            stroke-dasharray: 377;
+            stroke-dashoffset: 377;
+            transition: stroke-dashoffset 0.8s ease;
+        }
+        .score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: 800;
+            color: #E8580A;
+        }
+        .interpretation {
+            text-align: left;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+        .contact-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2edf7;
+            text-align: center;
+        }
+        .contact-footer a {
+            color: #E8580A;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .btn-calendly {
+            background: #1e2a3e;
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 10px 24px;
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .btn-calendly:hover {
+            background: #E8580A;
+        }
+        @media (max-width: 700px) {
+            .card-body { padding: 1.2rem; }
+            .options { flex-direction: column; gap: 0.5rem; }
+            .option { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header with Logo - using inline SVG placeholder that always works -->
+    <div class="header">
+        <div class="logo">
+            <svg width="220" height="70" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+                <rect width="220" height="70" rx="12" fill="#E8580A" />
+                <text x="20" y="45" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="white">Marketing Works</text>
+            </svg>
+        </div>
+        <h1 class="main-title">Brand Presence & Brand Authority Scorecard</h1>
+        <div class="subhead">Self-assess your LinkedIn Company Page & Founder Profile — Get instant scores + expert interpretation</div>
+    </div>
+
+    <!-- SECTION 1: Brand Presence Scorecard (Company Page) -->
+    <div class="card">
+        <div class="card-header">
+            <h2>📊 Brand Presence Scorecard</h2>
+            <p>LinkedIn Company Page · Evaluate your strategic positioning & activity</p>
+        </div>
+        <div class="card-body" id="companyQuestionsContainer">
+            <!-- Questions injected via JS -->
+        </div>
+    </div>
+
+    <!-- SECTION 2: Brand Authority Scorecard (Founder Profile) -->
+    <div class="card">
+        <div class="card-header">
+            <h2>🏆 Brand Authority Scorecard</h2>
+            <p>LinkedIn Founder Profile · Assess personal brand & thought leadership</p>
+        </div>
+        <div class="card-body" id="founderQuestionsContainer"></div>
+    </div>
+
+    <!-- LEAD CAPTURE SECTION -->
+    <div class="lead-card">
+        <h3>📧 Get Your Free Scorecard Report</h3>
+        <p style="margin-bottom: 1rem;">Enter your details below to see your results & download your dashboard.</p>
+        <div class="form-group">
+            <input type="text" id="leadName" placeholder="Full name *" required>
+        </div>
+        <div class="form-group">
+            <input type="email" id="leadEmail" placeholder="Email address *" required>
+        </div>
+        <div class="form-group">
+            <input type="tel" id="leadPhone" placeholder="Contact number (with country code) *" required>
+        </div>
+        <button class="btn-calculate" id="calculateBtn">🚀 Calculate my LinkedIn Brand Presence & Authority Score</button>
+    </div>
+
+    <!-- RESULTS SECTION (initially hidden) -->
+    <div id="resultsPanel" class="results">
+        <div class="results-title">📈 Score & Interpretation</div>
+        <div class="score-grid" id="scoreGrid"></div>
+        <div class="contact-footer">
+            <p><strong>Schedule a call to strengthen your brand through LinkedIn</strong></p>
+            <a href="https://calendly.com/contact-marketingworks" target="_blank" class="btn-calendly">📅 Book a free consultation</a>
+            <p style="margin-top: 1rem;">✉️ <a href="mailto:contact@marketingworks.in">contact@marketingworks.in</a> &nbsp;|&nbsp; 📞 <a href="tel:+919560130593">+91-95601 30593</a> (Call / WhatsApp)</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 1. COMPANY PAGE QUESTIONS (from Page.xlsx)
+    // --------------------------------------------------------------
+    const companyQuestions = [
+        {
+            text: "Does your LinkedIn company page communicate the business problems that you are solving — not just the services you offer?",
+            options: [
+                { label: "Clear customer problem articulation and transformation messaging", score: 10 },
+                { label: "Partially outcome-led but still service-heavy", score: 5 },
+                { label: "Mostly generic services/company description", score: 0 }
+            ]
+        },
+        {
+            text: "How consistently does your company publish content on LinkedIn?",
+            options: [
+                { label: "3 or more posts every week", score: 10 },
+                { label: "Irregular but active", score: 5 },
+                { label: "Rare or inconsistent posting", score: 0 }
+            ]
+        },
+        {
+            text: "Do you use multiple content types like carousels, short videos, posters, infographics, articles, blogs, whitepapers, newsletters etc.?",
+            options: [
+                { label: "Yes, all of them", score: 10 },
+                { label: "Only few of them", score: 5 },
+                { label: "Just 1-2 of them", score: 0 }
+            ]
+        },
+        {
+            text: "Does your LinkedIn page have Showcase Pages?",
+            options: [
+                { label: "Yes", score: 10 },
+                { label: "No", score: 0 },
+                { label: "Don't know about them", score: 0 }
+            ]
+        },
+        {
+            text: "Does your LinkedIn content intentionally guide visitors toward next steps, conversations, or lead generation actions?",
+            options: [
+                { label: "Clear conversion intent and CTAs", score: 10 },
+                { label: "Occasional CTA usage", score: 5 },
+                { label: "No visible conversion journey", score: 0 }
+            ]
+        }
+    ];
+
+    // --------------------------------------------------------------
+    // 2. FOUNDER PROFILE QUESTIONS (from Founder.xlsx)
+    // --------------------------------------------------------------
+    const founderQuestions = [
+        {
+            text: "Which best describes your LinkedIn Profile?",
+            options: [
+                { label: "Expertise & business impact focused", score: 10 },
+                { label: "Role with some positioning", score: 5 },
+                { label: "Designation/company only", score: 0 }
+            ]
+        },
+        {
+            text: "What type of content appears most on your LinkedIn profile?",
+            options: [
+                { label: "Consistently (thought leadership & insights)", score: 10 },
+                { label: "Occasionally (mix of personal & reposts)", score: 10 },
+                { label: "Rarely or no original content", score: 0 }
+            ]
+        },
+        {
+            text: "How actively do you engage on LinkedIn?",
+            options: [
+                { label: "Active in discussions (comments, shares, reactions)", score: 10 },
+                { label: "Occasional engagement", score: 5 },
+                { label: "Mostly passive (only viewing)", score: 0 }
+            ]
+        },
+        {
+            text: "How often do you share personal experiences, lessons, or business observations?",
+            options: [
+                { label: "Industry expert (frequently shares stories)", score: 10 },
+                { label: "5-10% of posts", score: 5 },
+                { label: "Don't Know / Rarely", score: 0 }
+            ]
+        },
+        {
+            text: "How strongly does your content establish thought leadership in your industry?",
+            options: [
+                { label: "Frequently (strong opinions, frameworks)", score: 10 },
+                { label: "Sometimes", score: 5 },
+                { label: "Rarely", score: 0 }
+            ]
+        },
+        {
+            text: "How often do you share opinions on industry trends or market shifts?",
+            options: [
+                { label: "Quite Often", score: 10 },
+                { label: "Rarely", score: 5 },
+                { label: "Never", score: 0 }
+            ]
+        }
+    ];
+
+    let companySelections = new Array(companyQuestions.length).fill(null);
+    let founderSelections = new Array(founderQuestions.length).fill(null);
+
+    function renderQuestions(containerId, questions, selectionsArray, sectionName) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        questions.forEach((q, idx) => {
+            const group = document.createElement('div');
+            group.className = 'question-group';
+            group.innerHTML = `<div class="question-text">${idx+1}. ${q.text}</div><div class="options" data-qidx="${idx}" data-section="${sectionName}"></div>`;
+            const optionsDiv = group.querySelector('.options');
+            q.options.forEach((opt, optIdx) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = 'option';
+                optDiv.innerText = opt.label;
+                optDiv.setAttribute('data-score', opt.score);
+                optDiv.addEventListener('click', () => {
+                    optionsDiv.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                    optDiv.classList.add('selected');
+                    selectionsArray[idx] = opt.score;
+                });
+                optionsDiv.appendChild(optDiv);
+            });
+            container.appendChild(group);
+        });
+    }
+
+    renderQuestions('companyQuestionsContainer', companyQuestions, companySelections, 'company');
+    renderQuestions('founderQuestionsContainer', founderQuestions, founderSelections, 'founder');
+
+    function computeCompanyScore() {
+        let sum = 0;
+        for (let s of companySelections) if (s !== null) sum += s;
+        const maxRaw = 50;
+        const percentage = (sum / maxRaw) * 100;
+        return Math.round(percentage);
+    }
+
+    function computeFounderScore() {
+        let sum = 0;
+        for (let s of founderSelections) if (s !== null) sum += s;
+        const maxRaw = 60;
+        const percentage = (sum / maxRaw) * 100;
+        return Math.round(percentage);
+    }
+
+    function getCompanyInterpretation(score) {
+        if (score >= 95) return { title: "Category Authority Brand", text: "Your LinkedIn presence reflects a mature, strategically positioned B2B brand with strong authority signals, differentiated messaging, and visible market relevance. Your content and positioning are likely contributing positively toward buyer trust, industry credibility, and brand recall. The next opportunity is not visibility — it is category ownership. Brands at this stage grow faster by strengthening executive amplification, insight-led thought leadership, and sharper market narratives." };
+        if (score >= 75) return { title: "Emerging Thought Leadership Brand", text: "Your company page shows strong potential and visible intent toward building authority. However, your LinkedIn presence may still lack sharper differentiation, stronger thought leadership consistency, or deeper strategic positioning. Your brand is active and credible — but not yet category-defining. With stronger authority-led content and positioning, your LinkedIn presence can evolve into a far more influential business asset." };
+        if (score >= 50) return { title: "Market Visibility Gap", text: "Your LinkedIn presence shows activity, but limited strategic influence. Your brand may currently appear informative but not memorable, visible but not differentiated, active but not authority-led. As a result, prospects may struggle to quickly understand why your company matters, what expertise you uniquely own, or how you differ from competitors. This is often a positioning and visibility challenge — not a capability problem." };
+        return { title: "Brand Visibility Risk", text: "Your LinkedIn presence currently shows weak authority and differentiation signals. Your messaging, visibility, or content approach may be limiting buyer trust, executive credibility, and demand-generation potential. At the moment, your brand risks appearing digitally interchangeable. Improvement requires sharper positioning, thought leadership, stronger narratives, and authority-driven visibility." };
+    }
+
+    function getFounderInterpretation(score) {
+        if (score >= 95) return { title: "Recognized Industry Authority", text: "Your LinkedIn presence reflects a strong executive brand with visible expertise, clear positioning, and credible industry influence. Your profile likely contributes positively toward trust acceleration, professional recall, and thought leadership perception. The next opportunity is building category influence. This is where stronger narratives, sharper perspectives, and consistent executive visibility create disproportionate impact." };
+        if (score >= 75) return { title: "Emerging Executive Voice", text: "Your profile demonstrates growing authority and professional credibility. However, your LinkedIn presence may still lack stronger differentiation, consistent thought leadership, or a clearly owned industry perspective. At this stage, many founders appear professionally active — but not yet strategically influential. Sharper positioning and stronger executive storytelling can significantly elevate your visibility and authority." };
+        if (score >= 50) return { title: "Limited Executive Visibility", text: "Your LinkedIn presence currently reflects moderate activity but limited authority-building. Your profile may still appear professionally present, but not strongly differentiated, memorable, or influence-led. As a result, buyers and peers may struggle to clearly identify your expertise or leadership voice. This is often a visibility strategy gap — not an expertise gap." };
+        return { title: "Low Personal Brand Visibility", text: "Your LinkedIn presence currently functions more like a static professional profile than an active executive brand. Your visibility patterns may be limiting trust formation, industry influence, and executive credibility. At present, your profile risks appearing passive and professionally indistinct. Building a strong founder brand requires consistent visibility, thought leadership, authentic executive voice, and authority-led content strategy." };
+    }
+
+    function createCircularScore(score, label) {
+        const radius = 60;
+        const circumference = 2 * Math.PI * radius;
+        return `
+            <div class="circular-score">
+                <svg viewBox="0 0 140 140">
+                    <circle cx="70" cy="70" r="60" class="circle-bg" stroke="#e2e8f0" stroke-width="12" fill="none"/>
+                    <circle cx="70" cy="70" r="60" class="circle-progress" stroke="#E8580A" stroke-width="12" fill="none" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}" id="circle-${label}"/>
+                </svg>
+                <div class="score-value">${score}</div>
+            </div>
+        `;
+    }
+
+    async function showResults() {
+        const companyScore = computeCompanyScore();
+        const founderScore = computeFounderScore();
+        const companyInterp = getCompanyInterpretation(companyScore);
+        const founderInterp = getFounderInterpretation(founderScore);
+
+        const scoreGrid = document.getElementById('scoreGrid');
+        scoreGrid.innerHTML = `
+            <div class="score-item">
+                <h3>📌 Brand Presence Scorecard<br><span style="font-size:0.8rem;">(LinkedIn Company Page)</span></h3>
+                ${createCircularScore(companyScore, 'company')}
+                <div class="interpretation">
+                    <strong>${companyInterp.title}</strong><br>
+                    ${companyInterp.text}
+                </div>
+            </div>
+            <div class="score-item">
+                <h3>👤 Brand Authority Scorecard<br><span style="font-size:0.8rem;">(LinkedIn Founder Profile)</span></h3>
+                ${createCircularScore(founderScore, 'founder')}
+                <div class="interpretation">
+                    <strong>${founderInterp.title}</strong><br>
+                    ${founderInterp.text}
+                </div>
+            </div>
+        `;
+        document.getElementById('resultsPanel').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('resultsPanel').offsetTop - 20, behavior: 'smooth' });
+
+        setTimeout(() => {
+            const circumference = 2 * Math.PI * 60;
+            const companyOffset = circumference * (1 - companyScore/100);
+            const founderOffset = circumference * (1 - founderScore/100);
+            const companyCircle = document.querySelector('#circle-company');
+            const founderCircle = document.querySelector('#circle-founder');
+            if (companyCircle) companyCircle.style.strokeDashoffset = companyOffset;
+            if (founderCircle) founderCircle.style.strokeDashoffset = founderOffset;
+        }, 100);
+    }
+
+    function captureLeadAndValidate() {
+        const name = document.getElementById('leadName').value.trim();
+        const email = document.getElementById('leadEmail').value.trim();
+        const phone = document.getElementById('leadPhone').value.trim();
+        if (!name || !email || !phone) {
+            alert("Please fill in your name, email, and contact number to see your score.");
+            return false;
+        }
+        if (!email.includes('@')) {
+            alert("Enter a valid email address.");
+            return false;
+        }
+        const leadData = { name, email, phone, timestamp: new Date().toISOString(), companyScore: computeCompanyScore(), founderScore: computeFounderScore() };
+        console.log("Lead captured:", leadData);
+        localStorage.setItem('leadData', JSON.stringify(leadData));
+        return true;
+    }
+
+    function validateAllQuestions() {
+        for (let i = 0; i < companySelections.length; i++) {
+            if (companySelections[i] === null) {
+                alert(`Please answer question ${i+1} in the Brand Presence Scorecard (Company Page).`);
+                return false;
+            }
+        }
+        for (let i = 0; i < founderSelections.length; i++) {
+            if (founderSelections[i] === null) {
+                alert(`Please answer question ${i+1} in the Brand Authority Scorecard (Founder Profile).`);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    document.getElementById('calculateBtn').addEventListener('click', () => {
+        if (!validateAllQuestions()) return;
+        if (!captureLeadAndValidate()) return;
+        showResults();
+    });
+</script>
+</body>
+</html>
